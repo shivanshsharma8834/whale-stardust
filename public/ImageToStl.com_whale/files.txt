@@ -1,0 +1,5 @@
+Meshes:
+mesh
+Textures:
+RootNode_baseColor.png
+RootNode_metallicRoughness.png

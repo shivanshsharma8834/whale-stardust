@@ -1,9 +1,12 @@
 'use client'
 import { Canvas, useThree } from '@react-three/fiber'
-import { Sparkles, OrbitControls, PerspectiveCamera, useTexture, Environment } from '@react-three/drei'
+import { Sparkles, OrbitControls, PerspectiveCamera, useTexture, Environment, Caustics } from '@react-three/drei'
 import { Whale } from './Whale'
 import { Suspense } from 'react'
 import * as THREE from 'three'
+import { EffectComposer, Bloom } from '@react-three/postprocessing'
+import { GlowingParticles } from './GlowingParticles'
+import { CausticProjector } from './CausticProjector'
 
 // 1. Create the Skybox Component
 function OceanBackground() {
@@ -26,13 +29,16 @@ function OceanBackground() {
 export default function UnderwaterScene() {
   return (
     <div className="h-screen w-full bg-black">
-      <Canvas>
+      <Canvas gl={{antialias: false, toneMappingExposure: 0.5 }} onCreated={({ scene }) => {
+           scene.backgroundIntensity = 0.5
+           scene.environmentIntensity = 0.5 
+        }}>
         <PerspectiveCamera makeDefault position={[0, 2, 12]} />
         <OrbitControls enablePan={false} maxPolarAngle={Math.PI / 1.5} />
 
         {/* 2. LIGHTING: The "Sun from Surface" Effect */}
         {/* Ambient light simulates light scattering in water (dark blue/teal) */}
-        <ambientLight intensity={1.5} color="#003366" />
+        <ambientLight intensity={0.5} color="#001133" />
         
         {/* Main Directional Light (Sun) */}
         <directionalLight 
@@ -52,21 +58,45 @@ export default function UnderwaterScene() {
         />
 
         {/* 3. PARTICLES */}
-        <Sparkles count={500} scale={[30, 30, 30]} size={6} speed={0.4} opacity={0.5} color="#ffffff" />
+        {/* <Sparkles 
+        count={2000}        // Increased from 500 to 2000
+        scale={[50, 50, 50]} // Increased area so particles are everywhere
+        size={30} 
+        speed={0.4} 
+        opacity={0.6} 
+        color="#ffffff"   // White is usually best for "marine snow"
+        blending={THREE.AdditiveBlending}
+        transparent={true}
+        depthWrite={false}
+        /> */}
+        <GlowingParticles count={2000} />
 
         {/* 4. SCENE CONTENT */}
         <Suspense fallback={null}>
-          <Whale />
+          
+            <Whale/>
+            {/* <CausticProjector /> */}
+          
           <Environment 
             files="/skyrender.hdr" 
             background 
-            // blur={0.01} 
+            blur={0.01} 
           />
-        </Suspense>
+        </Suspense> 
 
         {/* Fog is still good to blend the sphere seam, but make it lighter to match your image */}
-        <fog attach="fog" args={['#001e36', 10, 60]} /> 
+        <fogExp2 attach="fog" args={['#020817', 0.009]} />
 
+        <EffectComposer multisampling={4}>
+            {/* luminanceThreshold: Only pixels brighter than this value will glow (0-1)
+            intensity: How strong the glow is
+            */}
+            <Bloom 
+                luminanceThreshold={0.6} 
+                luminanceSmoothing={0.3} 
+                intensity={1.5} 
+            />
+        </EffectComposer>
       </Canvas>
     </div>
   )
