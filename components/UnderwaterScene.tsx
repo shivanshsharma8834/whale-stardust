@@ -1,15 +1,12 @@
 'use client'
-import { Canvas, useThree } from '@react-three/fiber'
-import { Sparkles, OrbitControls, PerspectiveCamera, useTexture, Environment, Caustics } from '@react-three/drei'
+import { Canvas } from '@react-three/fiber'
+import {  PerspectiveCamera, useTexture, Environment } from '@react-three/drei'
 import { Whale } from './Whale'
 import { Suspense } from 'react'
 import * as THREE from 'three'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { GlowingParticles } from './GlowingParticles'
-import { CausticProjector } from './CausticProjector'
-import { GodRays } from './GodRays'
 import { CinematicCamera } from './CinematicCamera'
-import { Effects } from './Effects'
 
 // 1. Create the Skybox Component
 function OceanBackground() {
