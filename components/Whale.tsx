@@ -22,6 +22,7 @@ const causticFragmentShader = `
   uniform sampler2D uCausticTex;
   uniform vec3 uColor;
   uniform float uTime; // <--- NEW: Time for animation
+  uniform float uIntensity;
   
   varying vec2 vUv;
   varying vec3 vWorldNormal;
@@ -40,7 +41,7 @@ const causticFragmentShader = `
     topMask = pow(topMask, 3.0); // Sharpen the mask
 
     // 3. COMBINE
-    vec3 finalColor = texColor.rgb * uColor * topMask * 3.0;
+    vec3 finalColor = texColor.rgb * uColor * topMask * uIntensity;
 
     gl_FragColor = vec4(finalColor, 1.0);
   }
@@ -100,7 +101,8 @@ export function Whale() {
           uniforms: {
             uCausticTex: { value: textures.caustics },
             uColor: { value: new THREE.Color('#00FFFF') },
-            uTime: { value: 0 } // Initialize time
+            uTime: { value: 0 }, // Initialize time
+            uIntensity: { value: 1.0 }
           },
           transparent: true,
           blending: THREE.AdditiveBlending,
@@ -135,7 +137,7 @@ export function Whale() {
   return (
     <group ref={groupRef} dispose={null} scale={0.05}>
       <primitive object={skinLayer} />
-      <primitive object={causticLayer} scale={1.0001} />
+      <primitive object={causticLayer} scale={1.02} />
     </group>
   )
 }

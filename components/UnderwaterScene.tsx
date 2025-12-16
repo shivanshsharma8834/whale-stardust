@@ -75,7 +75,6 @@ export default function UnderwaterScene() {
         <Suspense fallback={null}>
           
             <Whale/>
-            {/* <CausticProjector /> */}
           
           <Environment 
             files="/skyrender.hdr" 
