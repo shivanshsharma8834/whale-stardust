@@ -9,6 +9,7 @@ import { GlowingParticles } from './GlowingParticles'
 import { CausticProjector } from './CausticProjector'
 import { GodRays } from './GodRays'
 import { CinematicCamera } from './CinematicCamera'
+import { Effects } from './Effects'
 
 // 1. Create the Skybox Component
 function OceanBackground() {
@@ -60,6 +61,7 @@ export default function UnderwaterScene() {
           color="#aaddff" 
         />
 
+        {/* <Effects /> */}
         {/* 3. PARTICLES */}
         {/* <Sparkles 
         count={2000}        // Increased from 500 to 2000
