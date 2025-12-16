@@ -7,6 +7,8 @@ import * as THREE from 'three'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import { GlowingParticles } from './GlowingParticles'
 import { CausticProjector } from './CausticProjector'
+import { GodRays } from './GodRays'
+import { CinematicCamera } from './CinematicCamera'
 
 // 1. Create the Skybox Component
 function OceanBackground() {
@@ -34,7 +36,8 @@ export default function UnderwaterScene() {
            scene.environmentIntensity = 0.5 
         }}>
         <PerspectiveCamera makeDefault position={[0, 2, 12]} />
-        <OrbitControls enablePan={false} maxPolarAngle={Math.PI / 1.5} />
+        {/* <OrbitControls enablePan={false} maxPolarAngle={Math.PI / 1.5} /> */}
+        <CinematicCamera />
 
         {/* 2. LIGHTING: The "Sun from Surface" Effect */}
         {/* Ambient light simulates light scattering in water (dark blue/teal) */}
@@ -70,6 +73,7 @@ export default function UnderwaterScene() {
         depthWrite={false}
         /> */}
         <GlowingParticles count={2000} />
+        {/* <GodRays />  */}
 
         {/* 4. SCENE CONTENT */}
         <Suspense fallback={null}>
