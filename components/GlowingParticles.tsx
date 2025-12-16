@@ -86,9 +86,11 @@ export function GlowingParticles({ count = 3000 }) {
   return (
     <points ref={mesh}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" {...positions} />
-        <bufferAttribute attach="attributes-color" {...colors} />
-        <bufferAttribute attach="attributes-size" {...sizes} />
+        {/* We use 'primitive' because 'positions' is already a THREE.BufferAttribute instance */}
+        {/* Use 'primitive' to attach the already-created BufferAttribute instances */}
+        <primitive object={positions} attach="attributes-position" />
+        <primitive object={colors} attach="attributes-color" />
+        <primitive object={sizes} attach="attributes-size" />
       </bufferGeometry>
       <pointsMaterial
         size={2.5} // Base size increased
